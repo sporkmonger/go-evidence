@@ -177,6 +177,31 @@ func TestCommonality(t *testing.T) {
 	assert.True(cf.Valid())
 }
 
+func TestPignistic(t *testing.T) {
+	assert := assert.New(t)
+	const tolerance = 0.00001
+
+	mf := &MassFunction{}
+	mf.Set(K(), 0.0)
+	mf.Set(K("red"), 0.35)
+	mf.Set(K("yellow"), 0.25)
+	mf.Set(K("green"), 0.15)
+	mf.Set(K("red", "yellow"), 0.06)
+	mf.Set(K("red", "green"), 0.05)
+	mf.Set(K("yellow", "green"), 0.04)
+	mf.Set(K("red", "yellow", "green"), 0.1)
+	pigMf := mf.Pignistic()
+	assert.InDelta(0.0, pigMf.Get(K()), tolerance)
+	assert.InDelta(0.35+0.03+0.025+0.03333, pigMf.Get(K("red")), tolerance)   // 0.43833
+	assert.InDelta(0.25+0.03+0.02+0.03333, pigMf.Get(K("yellow")), tolerance) // 0.45
+	assert.InDelta(0.15+0.025+0.02+0.03333, pigMf.Get(K("green")), tolerance) // 0.34
+	assert.InDelta(0.0, pigMf.Get(K("red", "yellow")), tolerance)             // 0.16
+	assert.InDelta(0.0, pigMf.Get(K("red", "green")), tolerance)              // 0.15
+	assert.InDelta(0.0, pigMf.Get(K("yellow", "green")), tolerance)           // 0.14
+	assert.InDelta(0.0, pigMf.Get(K("red", "yellow", "green")), tolerance)
+	assert.True(pigMf.Valid())
+}
+
 func TestString(t *testing.T) {
 	assert := assert.New(t)
 

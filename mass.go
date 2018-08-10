@@ -126,3 +126,23 @@ func (mf *MassFunction) Commonality() (cf *CommonalityFunction) {
 	mf.mux.Unlock()
 	return
 }
+
+// Pignistic returns a new MassFunction after application of the pignistic
+// transformation containing only singletons.
+func (mf *MassFunction) Pignistic() (nmf *MassFunction) {
+	fks := mf.Powerset()
+	mf.mux.Lock()
+	nmf = &MassFunction{}
+	for _, p := range fks {
+		v := mf.getUnsafe(p)
+		if v > 0.0 {
+			pfe := p.FocalElements()
+			size := float64(len(pfe))
+			for _, s := range pfe {
+				nmf.Set(s, nmf.getUnsafe(s)+(v/size))
+			}
+		}
+	}
+	mf.mux.Unlock()
+	return
+}
