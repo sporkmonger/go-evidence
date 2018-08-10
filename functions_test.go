@@ -79,6 +79,27 @@ func TestIsSuperset(t *testing.T) {
 	assert.True(K("red", "yellow", "green").IsSuperset(K("yellow", "green")))
 }
 
+func TestIntersect(t *testing.T) {
+	assert := assert.New(t)
+
+	assert.Equal(K("a"), K("a").Intersect(K("a", "b", "c")))
+	assert.Equal(K("a"), K("a", "b", "c").Intersect(K("a")))
+	assert.Equal(K("a", "b"), K("a", "b").Intersect(K("a", "b", "c")))
+	assert.Equal(K("b", "c"), K("b", "c").Intersect(K("a", "b", "c")))
+	assert.Equal(K("a", "b"), K("a", "b").Intersect(K("a", "b")))
+	assert.Equal(K(), K("d").Intersect(K("a", "b")))
+	assert.Equal(K("b"), K("d", "b").Intersect(K("a", "b")))
+	assert.Equal(K(), K().Intersect(K("a", "b", "c")))
+	assert.Equal(K(), K().Intersect(K()))
+	assert.Equal(K(), K("a", "b", "c").Intersect(K()))
+	assert.Equal(K(), K("a").Intersect(K()))
+
+	assert.Equal(K("yellow", "green"),
+		K("yellow", "green").Intersect(K("red", "yellow", "green")))
+	assert.Equal(K("yellow", "green"),
+		K("red", "yellow", "green").Intersect(K("yellow", "green")))
+}
+
 func TestPowerset(t *testing.T) {
 	assert := assert.New(t)
 

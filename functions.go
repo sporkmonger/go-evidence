@@ -58,6 +58,22 @@ func (fk functionKey) IsSuperset(ofk functionKey) bool {
 	return count == len(ofkfe)
 }
 
+// Intersect returns the functionKey that would be the intersection of the two
+// keys.
+func (fk functionKey) Intersect(ofk functionKey) (ifk functionKey) {
+	var intersectingKeys []string
+	ofkfe := ofk.FocalElements()
+	for _, a := range ofkfe {
+		for _, b := range fk.FocalElements() {
+			if a == b {
+				intersectingKeys = append(intersectingKeys, string(a))
+				break
+			}
+		}
+	}
+	return K(intersectingKeys...)
+}
+
 // Powerset returns all combinations of function keys within this function key.
 func (fk functionKey) Powerset() (fks []functionKey) {
 	focals := fk.FocalElements()
