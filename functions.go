@@ -74,6 +74,19 @@ func (fk functionKey) Intersect(ofk functionKey) (ifk functionKey) {
 	return K(intersectingKeys...)
 }
 
+// Union returns the functionKey that would be the union of the two keys.
+func (fk functionKey) Union(ofk functionKey) (ifk functionKey) {
+	var unionedKeys []string
+	for _, a := range fk.FocalElements() {
+		unionedKeys = append(unionedKeys, string(a))
+	}
+	for _, b := range ofk.FocalElements() {
+		unionedKeys = append(unionedKeys, string(b))
+	}
+	// K takes care of dupes
+	return K(unionedKeys...)
+}
+
 // Powerset returns all combinations of function keys within this function key.
 func (fk functionKey) Powerset() (fks []functionKey) {
 	focals := fk.FocalElements()

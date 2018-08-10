@@ -100,6 +100,27 @@ func TestIntersect(t *testing.T) {
 		K("red", "yellow", "green").Intersect(K("yellow", "green")))
 }
 
+func TestUnion(t *testing.T) {
+	assert := assert.New(t)
+
+	assert.Equal(K("a", "b", "c"), K("a").Union(K("a", "b", "c")))
+	assert.Equal(K("a", "b", "c"), K("a", "b", "c").Union(K("a")))
+	assert.Equal(K("a", "b", "c"), K("a", "b").Union(K("a", "b", "c")))
+	assert.Equal(K("a", "b", "c"), K("b", "c").Union(K("a", "b", "c")))
+	assert.Equal(K("a", "b"), K("a", "b").Union(K("a", "b")))
+	assert.Equal(K("a", "b", "d"), K("d").Union(K("a", "b")))
+	assert.Equal(K("a", "b", "d"), K("d", "b").Union(K("a", "b")))
+	assert.Equal(K("a", "b", "c"), K().Union(K("a", "b", "c")))
+	assert.Equal(K(), K().Union(K()))
+	assert.Equal(K("a", "b", "c"), K("a", "b", "c").Union(K()))
+	assert.Equal(K("a"), K("a").Union(K()))
+
+	assert.Equal(K("red", "yellow", "green"),
+		K("yellow", "green").Union(K("red", "yellow", "green")))
+	assert.Equal(K("red", "yellow", "green"),
+		K("red", "yellow", "green").Union(K("yellow", "green")))
+}
+
 func TestPowerset(t *testing.T) {
 	assert := assert.New(t)
 
