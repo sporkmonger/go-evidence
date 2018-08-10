@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDempsterCombine(t *testing.T) {
+func TestCombineConjunctive(t *testing.T) {
 	assert := assert.New(t)
 	const tolerance = 0.00001
 
@@ -30,7 +30,7 @@ func TestDempsterCombine(t *testing.T) {
 	mf2.Set(K("yellow", "green"), 0.01)
 	mf2.Set(K("red", "yellow", "green"), 0.3)
 
-	cf := DempsterCombine(mf1, mf2)
+	cf := CombineConjunctive(mf1, mf2)
 	assert.InDelta(0.0, cf.Get(K()), tolerance)
 	assert.InDelta(0.32737, cf.Get(K("red")), tolerance)
 	assert.InDelta(0.35403, cf.Get(K("yellow")), tolerance)

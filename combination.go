@@ -1,8 +1,8 @@
 package evidence
 
-// DempsterCombine takes two MassFunctions and returns a new MassFunction
+// CombineConjunctive takes two MassFunctions and returns a new MassFunction
 // according to Dempster's rule of combination.
-func DempsterCombine(mf1 *MassFunction, mf2 *MassFunction) (cf *MassFunction) {
+func CombineConjunctive(mf1 *MassFunction, mf2 *MassFunction) (cf *MassFunction) {
 	cf = &MassFunction{}
 	cf.init()
 	for _, p1 := range mf1.Powerset() {
