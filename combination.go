@@ -1,8 +1,31 @@
 package evidence
 
-// CombineConjunctive takes two MassFunctions and returns a new MassFunction
-// according to Dempster's rule of combination.
-func CombineConjunctive(mf1 *MassFunction, mf2 *MassFunction) (cf *MassFunction) {
+// combinePairwise takes a pairwise combination function and two or more
+// MassFunctions and returns a new MassFunction according to the rule of
+// combination given by the combination function. Returns nil if no
+// MassFunctions are provided.
+func combinePairwise(combiner func(*MassFunction, *MassFunction) *MassFunction,
+	mfns ...*MassFunction) *MassFunction {
+	if len(mfns) == 0 {
+		return nil
+	}
+	accumulator := mfns[0]
+	for _, mf := range mfns[1:] {
+		accumulator = combiner(accumulator, mf)
+	}
+	return accumulator
+}
+
+// CombineConjunctive takes two or more MassFunctions and returns a new
+// MassFunction according to Dempster's rule of combination. Returns
+// nil if no MassFunctions are provided.
+func CombineConjunctive(mfns ...*MassFunction) *MassFunction {
+	return combinePairwise(pairwiseCombineConjunctive, mfns...)
+}
+
+// pairwiseCombineConjunctive takes two MassFunctions and returns a new
+// MassFunction according to Dempster's rule of combination.
+func pairwiseCombineConjunctive(mf1 *MassFunction, mf2 *MassFunction) (cf *MassFunction) {
 	cf = &MassFunction{}
 	cf.init()
 	for _, p1 := range mf1.Powerset() {
@@ -21,9 +44,16 @@ func CombineConjunctive(mf1 *MassFunction, mf2 *MassFunction) (cf *MassFunction)
 	return cf
 }
 
-// CombineDisjunctive takes two MassFunctions and returns a new MassFunction
-// according to Dempster's rule of combination.
-func CombineDisjunctive(mf1 *MassFunction, mf2 *MassFunction) (cf *MassFunction) {
+// CombineDisjunctive takes two or more MassFunctions and returns a new
+// MassFunction according to the disjunctive rule of combination. Returns
+// nil if no MassFunctions are provided.
+func CombineDisjunctive(mfns ...*MassFunction) (cf *MassFunction) {
+	return combinePairwise(pairwiseCombineDisjunctive, mfns...)
+}
+
+// pairwiseCombineDisjunctive takes two MassFunctions and returns a new
+// MassFunction according to the disjunctive rule of combination.
+func pairwiseCombineDisjunctive(mf1 *MassFunction, mf2 *MassFunction) (cf *MassFunction) {
 	cf = &MassFunction{}
 	cf.init()
 	for _, p1 := range mf1.Powerset() {
