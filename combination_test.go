@@ -208,7 +208,7 @@ func TestCombineConjunctive(t *testing.T) {
 		},
 		{
 			// https://www.mdpi.com/1424-8220/18/5/1487/pdf
-			name: "multi-sensor target recognition system 4x evidence",
+			name: "multi-sensor target recognition system 5x evidence",
 			mfns: func() []*MassFunction {
 				mf1 := &MassFunction{}
 				mf1.Set(K(), 0.0)
