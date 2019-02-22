@@ -141,6 +141,8 @@ type Function struct {
 	mux           sync.Mutex
 }
 
+// TODO: Need a hash func for efficient equality testing and O(1) lookups
+
 func (f *Function) init() {
 	if f.possibilities == nil {
 		f.possibilities = make(map[functionKey]float64)
