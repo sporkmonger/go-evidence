@@ -7,7 +7,7 @@ import (
 )
 
 func TestCombineConjunctive(t *testing.T) {
-	const tolerance = 0.00001
+	const tolerance = 0.0025
 
 	tcs := []struct {
 		name        string
@@ -104,6 +104,154 @@ func TestCombineConjunctive(t *testing.T) {
 				return cf
 			},
 		},
+		{
+			// https://www.mdpi.com/1424-8220/18/5/1487/pdf
+			name: "multi-sensor target recognition system 2x evidence",
+			mfns: func() []*MassFunction {
+				mf1 := &MassFunction{}
+				mf1.Set(K(), 0.0)
+				mf1.Set(K("a"), 0.30)
+				mf1.Set(K("b"), 0.20)
+				mf1.Set(K("c"), 0.10)
+				mf1.Set(K("a", "b", "c"), 0.40)
+
+				mf2 := &MassFunction{}
+				mf2.Set(K("a"), 0.00)
+				mf2.Set(K("b"), 0.90)
+				mf2.Set(K("c"), 0.10)
+				mf2.Set(K("a", "b", "c"), 0.00)
+
+				return []*MassFunction{mf1, mf2}
+			},
+			expectedMfn: func() *MassFunction {
+				cf := &MassFunction{}
+				cf.Set(K("a"), 0.00)
+				cf.Set(K("b"), 0.9153)
+				cf.Set(K("c"), 0.0847)
+				cf.Set(K("a", "b", "c"), 0.00)
+				return cf
+			},
+		},
+		{
+			// https://www.mdpi.com/1424-8220/18/5/1487/pdf
+			name: "multi-sensor target recognition system 3x evidence",
+			mfns: func() []*MassFunction {
+				mf1 := &MassFunction{}
+				mf1.Set(K(), 0.0)
+				mf1.Set(K("a"), 0.30)
+				mf1.Set(K("b"), 0.20)
+				mf1.Set(K("c"), 0.10)
+				mf1.Set(K("a", "b", "c"), 0.40)
+
+				mf2 := &MassFunction{}
+				mf2.Set(K("a"), 0.00)
+				mf2.Set(K("b"), 0.90)
+				mf2.Set(K("c"), 0.10)
+				mf2.Set(K("a", "b", "c"), 0.00)
+
+				mf3 := &MassFunction{}
+				mf3.Set(K("a"), 0.60)
+				mf3.Set(K("b"), 0.10)
+				mf3.Set(K("c"), 0.10)
+				mf3.Set(K("a", "b", "c"), 0.20)
+
+				return []*MassFunction{mf1, mf2, mf3}
+			},
+			expectedMfn: func() *MassFunction {
+				cf := &MassFunction{}
+				cf.Set(K("a"), 0.00)
+				cf.Set(K("b"), 0.9153)
+				cf.Set(K("c"), 0.0847)
+				cf.Set(K("a", "b", "c"), 0.00)
+				return cf
+			},
+		},
+		{
+			// https://www.mdpi.com/1424-8220/18/5/1487/pdf
+			name: "multi-sensor target recognition system 4x evidence",
+			mfns: func() []*MassFunction {
+				mf1 := &MassFunction{}
+				mf1.Set(K(), 0.0)
+				mf1.Set(K("a"), 0.30)
+				mf1.Set(K("b"), 0.20)
+				mf1.Set(K("c"), 0.10)
+				mf1.Set(K("a", "b", "c"), 0.40)
+
+				mf2 := &MassFunction{}
+				mf2.Set(K("a"), 0.00)
+				mf2.Set(K("b"), 0.90)
+				mf2.Set(K("c"), 0.10)
+				mf2.Set(K("a", "b", "c"), 0.00)
+
+				mf3 := &MassFunction{}
+				mf3.Set(K("a"), 0.60)
+				mf3.Set(K("b"), 0.10)
+				mf3.Set(K("c"), 0.10)
+				mf3.Set(K("a", "b", "c"), 0.20)
+
+				mf4 := &MassFunction{}
+				mf4.Set(K("a"), 0.70)
+				mf4.Set(K("b"), 0.10)
+				mf4.Set(K("c"), 0.10)
+				mf4.Set(K("a", "b", "c"), 0.10)
+
+				return []*MassFunction{mf1, mf2, mf3, mf4}
+			},
+			expectedMfn: func() *MassFunction {
+				cf := &MassFunction{}
+				cf.Set(K("a"), 0.00)
+				cf.Set(K("b"), 0.9153)
+				cf.Set(K("c"), 0.0847)
+				cf.Set(K("a", "b", "c"), 0.00)
+				return cf
+			},
+		},
+		{
+			// https://www.mdpi.com/1424-8220/18/5/1487/pdf
+			name: "multi-sensor target recognition system 4x evidence",
+			mfns: func() []*MassFunction {
+				mf1 := &MassFunction{}
+				mf1.Set(K(), 0.0)
+				mf1.Set(K("a"), 0.30)
+				mf1.Set(K("b"), 0.20)
+				mf1.Set(K("c"), 0.10)
+				mf1.Set(K("a", "b", "c"), 0.40)
+
+				mf2 := &MassFunction{}
+				mf2.Set(K("a"), 0.00)
+				mf2.Set(K("b"), 0.90)
+				mf2.Set(K("c"), 0.10)
+				mf2.Set(K("a", "b", "c"), 0.00)
+
+				mf3 := &MassFunction{}
+				mf3.Set(K("a"), 0.60)
+				mf3.Set(K("b"), 0.10)
+				mf3.Set(K("c"), 0.10)
+				mf3.Set(K("a", "b", "c"), 0.20)
+
+				mf4 := &MassFunction{}
+				mf4.Set(K("a"), 0.70)
+				mf4.Set(K("b"), 0.10)
+				mf4.Set(K("c"), 0.10)
+				mf4.Set(K("a", "b", "c"), 0.10)
+
+				mf5 := &MassFunction{}
+				mf5.Set(K("a"), 0.70)
+				mf5.Set(K("b"), 0.10)
+				mf5.Set(K("c"), 0.10)
+				mf5.Set(K("a", "b", "c"), 0.10)
+
+				return []*MassFunction{mf1, mf2, mf3, mf4, mf5}
+			},
+			expectedMfn: func() *MassFunction {
+				cf := &MassFunction{}
+				cf.Set(K("a"), 0.00)
+				cf.Set(K("b"), 0.9153)
+				cf.Set(K("c"), 0.0847)
+				cf.Set(K("a", "b", "c"), 0.00)
+				return cf
+			},
+		},
 	}
 
 	for _, tc := range tcs {
@@ -123,7 +271,7 @@ func TestCombineConjunctive(t *testing.T) {
 }
 
 func TestCombineDisjunctive(t *testing.T) {
-	const tolerance = 0.00001
+	const tolerance = 0.0025
 
 	tcs := []struct {
 		name        string
@@ -217,6 +365,37 @@ func TestCombineDisjunctive(t *testing.T) {
 				cf.Set(K("allow"), 0.0)
 				cf.Set(K("deny"), 0.0)
 				cf.Set(K("allow", "deny"), 1.0)
+				return cf
+			},
+		},
+		{
+			// https://www.mdpi.com/1424-8220/18/5/1487/pdf
+			name: "multi-sensor target recognition system, 2x evidence",
+			mfns: func() []*MassFunction {
+				mf1 := &MassFunction{}
+				mf1.Set(K(), 0.0)
+				mf1.Set(K("a"), 0.30)
+				mf1.Set(K("b"), 0.20)
+				mf1.Set(K("c"), 0.10)
+				mf1.Set(K("a", "b", "c"), 0.40)
+
+				mf2 := &MassFunction{}
+				mf2.Set(K("a"), 0.00)
+				mf2.Set(K("b"), 0.90)
+				mf2.Set(K("c"), 0.10)
+				mf2.Set(K("a", "b", "c"), 0.00)
+
+				return []*MassFunction{mf1, mf2}
+			},
+			expectedMfn: func() *MassFunction {
+				cf := &MassFunction{}
+				cf.Set(K("a"), 0.00)
+				cf.Set(K("b"), 0.18)
+				cf.Set(K("c"), 0.01)
+				cf.Set(K("a", "b"), 0.27)
+				cf.Set(K("b", "c"), 0.11)
+				cf.Set(K("a", "c"), 0.03)
+				cf.Set(K("a", "b", "c"), 0.40)
 				return cf
 			},
 		},
