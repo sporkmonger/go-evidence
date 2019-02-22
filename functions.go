@@ -265,7 +265,7 @@ func (f *Function) Powerset() (fks []functionKey) {
 }
 
 func floatEq(a float64, b float64) bool {
-	const tolerance = 0.000075
+	const tolerance = 0.0005
 	opt := cmp.Comparer(func(x, y float64) bool {
 		diff := math.Abs(x - y)
 		mean := math.Abs(x+y) / 2.0
