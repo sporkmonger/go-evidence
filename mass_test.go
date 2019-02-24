@@ -219,3 +219,68 @@ func TestString(t *testing.T) {
 	assert.Contains(str, "{b,c}\t0.500000\t0.900000\t1.000000")
 	assert.Contains(str, "{a,b,c}\t0.100000\t1.000000\t1.000000")
 }
+
+func TestEntropy(t *testing.T) {
+	assert := assert.New(t)
+	const tolerance = 0.0001
+
+	// TODO: table test
+
+	mf := &MassFunction{}
+	mf.Set(K("a"), 1.0/3.0)
+	mf.Set(K("b"), 1.0/3.0)
+	mf.Set(K("c"), 1.0/3.0)
+
+	assert.InDelta(1.5850, mf.Entropy(), tolerance)
+
+	mf = &MassFunction{}
+	mf.Set(K("a"), 1.0/7.0)
+	mf.Set(K("b"), 1.0/7.0)
+	mf.Set(K("c"), 1.0/7.0)
+	mf.Set(K("a", "b"), 1.0/7.0)
+	mf.Set(K("a", "c"), 1.0/7.0)
+	mf.Set(K("b", "c"), 1.0/7.0)
+	mf.Set(K("a", "b", "c"), 1.0/7.0)
+
+	assert.InDelta(3.8877, mf.Entropy(), tolerance)
+
+	mf = &MassFunction{}
+	mf.Set(K("a", "b", "c", "d", "e"), 1.0)
+
+	assert.InDelta(4.9541, mf.Entropy(), tolerance)
+}
+
+func BenchmarkEntropy(b *testing.B) {
+	mf1 := &MassFunction{}
+	mf1.Set(K(), 0.0)
+	mf1.Set(K("a"), 0.30)
+	mf1.Set(K("b"), 0.20)
+	mf1.Set(K("c"), 0.10)
+	mf1.Set(K("a", "b", "c"), 0.40)
+
+	mf2 := &MassFunction{}
+	mf2.Set(K("a"), 0.00)
+	mf2.Set(K("b"), 0.90)
+	mf2.Set(K("c"), 0.10)
+	mf2.Set(K("a", "b", "c"), 0.00)
+
+	mf3 := &MassFunction{}
+	mf3.Set(K("a"), 0.60)
+	mf3.Set(K("b"), 0.10)
+	mf3.Set(K("c"), 0.10)
+	mf3.Set(K("a", "b", "c"), 0.20)
+
+	mf4 := &MassFunction{}
+	mf4.Set(K("a"), 0.70)
+	mf4.Set(K("b"), 0.10)
+	mf4.Set(K("c"), 0.10)
+	mf4.Set(K("a", "b", "c"), 0.10)
+
+	mfns := []*MassFunction{mf1, mf2, mf3, mf4}
+
+	for n := 0; n < b.N; n++ {
+		for i := 0; i < 4; i++ {
+			mfns[i].Entropy()
+		}
+	}
+}

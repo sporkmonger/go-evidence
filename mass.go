@@ -2,6 +2,7 @@ package evidence
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -145,4 +146,21 @@ func (mf *MassFunction) Pignistic() (nmf *MassFunction) {
 	}
 	mf.mux.Unlock()
 	return
+}
+
+// Entropy returns the Deng entropy for the MassFunction.
+func (mf *MassFunction) Entropy() float64 {
+	entropy := 0.0
+	fks := mf.Powerset()
+	mf.mux.Lock()
+	for _, p := range fks {
+		v := mf.getUnsafe(p)
+		if floatEq(v, 0.0) {
+			continue
+		}
+		n := len(p.FocalElements())
+		entropy -= v * math.Log2(v/(math.Pow(2.0, float64(n))-1.0))
+	}
+	mf.mux.Unlock()
+	return entropy
 }
