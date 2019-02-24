@@ -416,3 +416,81 @@ func TestCombineDisjunctive(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkCombineConjunctive(b *testing.B) {
+	mf1 := &MassFunction{}
+	mf1.Set(K(), 0.0)
+	mf1.Set(K("a"), 0.30)
+	mf1.Set(K("b"), 0.20)
+	mf1.Set(K("c"), 0.10)
+	mf1.Set(K("a", "b", "c"), 0.40)
+
+	mf2 := &MassFunction{}
+	mf2.Set(K("a"), 0.00)
+	mf2.Set(K("b"), 0.90)
+	mf2.Set(K("c"), 0.10)
+	mf2.Set(K("a", "b", "c"), 0.00)
+
+	mf3 := &MassFunction{}
+	mf3.Set(K("a"), 0.60)
+	mf3.Set(K("b"), 0.10)
+	mf3.Set(K("c"), 0.10)
+	mf3.Set(K("a", "b", "c"), 0.20)
+
+	mf4 := &MassFunction{}
+	mf4.Set(K("a"), 0.70)
+	mf4.Set(K("b"), 0.10)
+	mf4.Set(K("c"), 0.10)
+	mf4.Set(K("a", "b", "c"), 0.10)
+
+	mf5 := &MassFunction{}
+	mf5.Set(K("a"), 0.70)
+	mf5.Set(K("b"), 0.10)
+	mf5.Set(K("c"), 0.10)
+	mf5.Set(K("a", "b", "c"), 0.10)
+
+	mfns := []*MassFunction{mf1, mf2, mf3, mf4, mf5}
+
+	for n := 0; n < b.N; n++ {
+		CombineConjunctive(mfns...)
+	}
+}
+
+func BenchmarkCombineDisjunctive(b *testing.B) {
+	mf1 := &MassFunction{}
+	mf1.Set(K(), 0.0)
+	mf1.Set(K("a"), 0.30)
+	mf1.Set(K("b"), 0.20)
+	mf1.Set(K("c"), 0.10)
+	mf1.Set(K("a", "b", "c"), 0.40)
+
+	mf2 := &MassFunction{}
+	mf2.Set(K("a"), 0.00)
+	mf2.Set(K("b"), 0.90)
+	mf2.Set(K("c"), 0.10)
+	mf2.Set(K("a", "b", "c"), 0.00)
+
+	mf3 := &MassFunction{}
+	mf3.Set(K("a"), 0.60)
+	mf3.Set(K("b"), 0.10)
+	mf3.Set(K("c"), 0.10)
+	mf3.Set(K("a", "b", "c"), 0.20)
+
+	mf4 := &MassFunction{}
+	mf4.Set(K("a"), 0.70)
+	mf4.Set(K("b"), 0.10)
+	mf4.Set(K("c"), 0.10)
+	mf4.Set(K("a", "b", "c"), 0.10)
+
+	mf5 := &MassFunction{}
+	mf5.Set(K("a"), 0.70)
+	mf5.Set(K("b"), 0.10)
+	mf5.Set(K("c"), 0.10)
+	mf5.Set(K("a", "b", "c"), 0.10)
+
+	mfns := []*MassFunction{mf1, mf2, mf3, mf4, mf5}
+
+	for n := 0; n < b.N; n++ {
+		CombineDisjunctive(mfns...)
+	}
+}
