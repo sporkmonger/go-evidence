@@ -3,7 +3,7 @@ A library for working with evidence theory models.
 
 Requires Go 1.10+
 
-[![GoDoc Widget]][GoDoc] [![Build Widget]][Build] [![Coverage Widget]][Coverage]
+[![GoDoc Widget]][GoDoc] [![Build Widget]][Build] [![Coverage Widget]][Coverage] [![Maintainability Widget]][Maintainability]
 
 ----
 
@@ -13,3 +13,5 @@ Requires Go 1.10+
 [Build Widget]: https://circleci.com/gh/sporkmonger/go-evidence.svg?style=shield
 [Coverage]: https://codeclimate.com/github/sporkmonger/go-evidence/test_coverage
 [Coverage Widget]: https://api.codeclimate.com/v1/badges/6d85ee27bbfd8bbd64f3/test_coverage
+[Maintainability]: https://codeclimate.com/github/sporkmonger/go-evidence/maintainability
+[Maintainability Widget]: https://api.codeclimate.com/v1/badges/6d85ee27bbfd8bbd64f3/maintainability
